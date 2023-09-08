@@ -1,0 +1,28 @@
+.homepage-container {
+    display: flex;
+    gap: 50px;
+    padding: 0 50px;
+
+    .homepage-content {
+        display: flex;
+        flex-direction: column;
+        padding-top: 10rem;
+
+        .title-content {
+            font-size: 50px;
+            font-weight: 600;
+            width: 350px;
+        }
+
+        .body-content {
+            padding-top: 50px;
+            padding-bottom: 30px;
+            font-size: 20px;
+            width: 350px;
+        }
+
+        .btn-content {
+            width: 250px;
+        }
+    }
+}

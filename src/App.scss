@@ -1,0 +1,21 @@
+body {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.app-container {
+  .header-container {
+    padding-top: 10px;
+
+    .navbar-nav {
+
+
+      .nav-link {
+        &.active {
+          color: rgb(211, 0, 0);
+        }
+      }
+    }
+  }
+}

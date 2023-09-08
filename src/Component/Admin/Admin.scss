@@ -1,0 +1,19 @@
+.admin-container {
+    display: flex;
+
+    .admin-sidebar {
+        .pro-sidebar {
+            height: 100vh !important;
+        }
+    }
+
+    .admin-content {
+        width: 100%;
+
+        .admin-header-content {
+            width: 50px;
+        }
+
+        .admin-main-content {}
+    }
+}
