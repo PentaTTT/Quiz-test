@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ModalCreateUser from "./ModalCreateUser";
 import './UserManagement.scss';
-import { getUserWithPaginate } from "../../../services/apiService";
+import { getUserWithPaginate } from "../../../../services/apiService";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalShowDetail from "./ModalShowDetail";
 import ModalDeleteUser from "./ModalDeleteUser";

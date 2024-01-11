@@ -1,18 +1,37 @@
+import { NavDropdown } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { useDispatch, useSelector } from 'react-redux';
 //import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { postLogout } from '../../services/apiService';
+import { toast } from 'react-toastify';
+import { logoutAction } from '../../redux/action/userAction';
 
 
 const Header = () => {
+
+    const account = useSelector(state => state.user.account)
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated)
+    const dispatch = useDispatch()
+    console.log(account)
     const navigate = useNavigate()
     const handleLogin = () => {
         navigate('/login')
     }
-
     const handleRegister = () => {
         navigate('/register')
+    }
+    const handleLogout = async () => {
+        let res = await postLogout(account.email, account.refresh_token)
+        if (res && res.EC === 0) {
+            //clear data
+            dispatch(logoutAction())
+            navigate('/login')
+        } else {
+            toast.error(res.EM)
+        }
     }
 
     return (
@@ -28,23 +47,31 @@ const Header = () => {
                     </Nav>
 
                     <Nav className="">
-                        <button className='btn btn-outline-dark mx-2'
-                            onClick={() => handleLogin()}
-                        >Log in</button>
-                        <button className='btn btn-dark'
-                            onClick={() => handleRegister()}
-                        >Sign up</button>
+                        {
+                            isAuthenticated === false ?
+                                <>
+                                    <button className='btn btn-outline-dark mx-2'
+                                        onClick={() => handleLogin()}
+                                    >Log in</button>
+                                    <button className='btn btn-dark'
+                                        onClick={() => handleRegister()}
+                                    >Sign up</button>
+                                </>
+                                :
+                                <>
+                                    <NavDropdown title={account.username} id="basic-nav-dropdown">
+                                        <NavDropdown.Item href="/login">Profile</NavDropdown.Item>
+                                        <NavDropdown.Item href="#action/3.2">
+                                            Another action
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item onClick={() => handleLogout()}>
+                                            Logout
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
+                                </>
+                        }
 
-                        {/* <NavDropdown title="Settings" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Login</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">
-                                Logout
-                            </NavDropdown.Item>
-                        </NavDropdown> */}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

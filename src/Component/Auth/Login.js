@@ -3,24 +3,54 @@ import './Login.scss'
 import { useNavigate } from 'react-router-dom';
 import { postLogin } from '../../services/apiService'
 import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux';
+import { loginAction } from '../../redux/action/userAction';
+import { ImSpinner9 } from 'react-icons/im'
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
     const handleLogin = async () => {
         //validate
-
+        const isValid = validateEmail(email)
+        if (!isValid) {
+            toast.error('Invalid email');
+            return;
+        }
+        if (!password) {
+            toast.error('Invalid password');
+            return;
+        }
+        setIsLoading(true)
         //submit
         let res = await postLogin(email, password)
         if (res && res.EC === 0) {
+            dispatch(loginAction(res))
             toast.success(res.EM)
+            setIsLoading(false)
             navigate('/')
         }
         if (res && res.EC !== 0) {
             toast.error(res.EM)
+            setIsLoading(false)
+        }
+    }
+
+    const handleKeyDown = (event) => {
+        if (event && event.key === 'Enter') {
+            handleLogin()
         }
     }
 
@@ -54,13 +84,17 @@ const Login = () => {
                                                 <label className="form-label" htmlFor="form2Example22">Password</label>
                                                 <input type="password" id="form2Example22" className="form-control"
                                                     onChange={(event) => { setPassword(event.target.value) }}
+                                                    onKeyDown={(event) => handleKeyDown(event)}
                                                 />
                                             </div>
 
                                             <div className="text-center pt-1 pb-1">
                                                 <button className="col-12 btn btn-primary gradient-custom-2 mb-2" type="button"
                                                     onClick={() => { handleLogin() }}
-                                                >Log in</button>
+                                                    disabled={isLoading}
+                                                >
+                                                    {isLoading === true && <ImSpinner9 className='icon-loading' />}
+                                                    Log in</button>
 
                                             </div>
                                             <div className="text-center pt-1 mb-5 pb-1"

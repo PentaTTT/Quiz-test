@@ -38,10 +38,12 @@ const SideBar = (props) => {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
+                            cursor: 'pointer'
                         }}
+                        onClick={() => navigate('/')}
                     >
                         <DiReact size={"3em"} color={'red'} />
-                        <span onClick={() => navigate('/')}> ADMIN DASHBOARD</span>
+                        <span> ADMIN DASHBOARD</span>
 
                     </div>
                 </SidebarHeader>
@@ -64,8 +66,8 @@ const SideBar = (props) => {
                         >
 
                             <MenuItem> Users Management  <Link to='/admin/user-management' /></MenuItem>
-                            <MenuItem> Quiz Management</MenuItem>
-                            <MenuItem> Record Management</MenuItem>
+                            <MenuItem> Quiz Management <Link to='/admin/quiz-management' /></MenuItem>
+                            <MenuItem> Question Management <Link to='/admin/question-management' /></MenuItem>
                         </SubMenu>
                     </Menu>
                 </SidebarContent>
